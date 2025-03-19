@@ -1,24 +1,23 @@
-# README
+# URL Shortener System
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+The URL Shortener System is...
 
-Things you may want to cover:
+## Local development environment
 
-* Ruby version
+Use `docker` and `docker compose` for development environment.
 
-* System dependencies
+### Building and starting the container
 
-* Configuration
+Under the app folder execute the following commands:
 
-* Database creation
+```bash
+docker compose up --build -d
+```
 
-* Database initialization
+### To access the container
 
-* How to run the test suite
+Under the app folder execute the following commands:
 
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+```bash
+docker compose exec api bash
+```

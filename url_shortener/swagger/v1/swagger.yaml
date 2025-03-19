@@ -1,0 +1,118 @@
+---
+openapi: 3.0.3
+info:
+  title: URL Shortener
+  version: v1
+paths:
+  "/v1/urls":
+    post:
+      summary: create short URL
+      tags:
+      - Urls
+      operationId: url_create
+      parameters: []
+      responses:
+        '201':
+          description: url created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  url:
+                    "$ref": "#/components/schemas/url_response"
+                required:
+                - url
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/url_create"
+  "/v1/urls/{short_url}":
+    get:
+      summary: Retrieve original URL
+      tags:
+      - Urls
+      operationId: url_show
+      parameters:
+      - name: short_url
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '302':
+          description: URL created without expiration date
+        '404':
+          description: URL not found
+servers:
+- url: "{defaultHost}"
+  variables:
+    defaultHost:
+      default: ''
+components:
+  schemas:
+    error_response:
+      type: object
+      properties:
+        error:
+          "$ref": "#/components/schemas/exception"
+      required:
+      - error
+    exception:
+      type: object
+      properties:
+        id:
+          type: string
+        message:
+          type: string
+    url:
+      type: object
+      properties:
+        original_url:
+          type: string
+        short_url:
+          type: string
+        access_count:
+          type: integer
+        expiration_date:
+          type: string
+          format: date-time
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+    url_create:
+      type: object
+      properties:
+        original_url:
+          type: string
+    url_response:
+      type: object
+      properties:
+        original_url:
+          type: string
+        short_url:
+          type: string
+        access_count:
+          type: integer
+          nullable: true
+        expiration_date:
+          type: string
+          format: date-time
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+  securitySchemes:
+    bearer_auth:
+      type: http
+      scheme: bearer
+    basic_auth:
+      type: http
+      scheme: basic

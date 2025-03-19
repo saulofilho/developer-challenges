@@ -45,7 +45,7 @@ RSpec.describe 'V1::Urls', swagger_doc: 'v1/swagger.yaml' do
         let(:short_url) { url.short_url }
 
         before do
-          url.update(expiration_date: 1.day.ago)
+          url.update(expiration_date: 1.day.from_now)
         end
 
         response 302, 'redirected to original URL' do
@@ -84,6 +84,26 @@ RSpec.describe 'V1::Urls', swagger_doc: 'v1/swagger.yaml' do
           run_test! do
             expect(json_response.error).to eq('URL not found')
           end
+        end
+      end
+
+      context 'when accessing a valid URL and checking access' do
+        let(:url) { create(:url) }
+        let(:short_url) { url.short_url }
+
+        before do
+          url.update(expiration_date: 1.day.from_now)
+        end
+
+        it 'increments the access count and creates an access record' do
+          initial_access_count = url.access_count
+          initial_accesses_count = url.accesses.count
+
+          get "/v1/urls/#{short_url}"
+
+          url.reload
+          expect(url.access_count).to eq(initial_access_count + 1)
+          expect(url.accesses.count).to eq(initial_accesses_count + 1)
         end
       end
     end

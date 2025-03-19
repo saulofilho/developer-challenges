@@ -88,14 +88,10 @@ RSpec.describe 'V1::Urls', swagger_doc: 'v1/swagger.yaml' do
           initial_access_count = url.access_count
           initial_accesses_count = url.accesses.count
 
-          # Simula o acesso à URL curta
           get "/v1/urls/#{short_url}"
 
-          # Verifique se o contador de acessos foi incrementado
           url.reload
           expect(url.access_count).to eq(initial_access_count + 1)
-
-          # Verifique se um novo registro foi criado na tabela de Access
           expect(url.accesses.count).to eq(initial_accesses_count + 1)
         end
       end

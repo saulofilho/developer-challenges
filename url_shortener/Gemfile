@@ -35,15 +35,38 @@ gem "thruster", require: false
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin Ajax possible
 # gem "rack-cors"
 
+gem 'activerecord-import'
+gem 'panko_serializer'
+gem 'pg', '>= 0.18', '< 2.0'
+gem 'rswag-api'
+gem 'rswag-ui'
+gem 'simple_command'
+
 group :development, :test do
-  # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
-  gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
-
-  # Static analysis for security vulnerabilities [https://brakemanscanner.org/]
-  gem "brakeman", require: false
-
-  # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
-  gem "rubocop-rails-omakase", require: false
+  gem 'awesome_print'
+  gem 'brakeman', require: false
+  gem 'debug', platforms: %i[mri windows], require: 'debug/prelude'
+  gem 'factory_bot_rails'
+  gem 'pry', '~> 0.14.2'
+  gem 'pry-byebug'
+  gem 'rspec-rails', '~> 7.0.0'
+  gem 'rswag-specs'
+  gem 'rubocop-rails-omakase', require: false
 end
 
+group :development do
+  gem 'annotate'
+  gem 'listen', '~> 3.8'
+  gem 'rubocop', '~> 1.54.1', require: false
+  gem 'rubocop-rails', require: false
+  gem 'rubocop-rspec', require: false
+  gem 'spring'
+  gem 'spring-watcher-listen', '~> 2.1.0'
+end
 
+group :test do
+  gem 'database_cleaner-active_record'
+  gem 'faker'
+  gem 'shoulda-matchers', '~> 5.3.0'
+  gem 'simplecov', require: false
+end

@@ -1,0 +1,38 @@
+# frozen_string_literal: true
+
+require 'rails_helper'
+
+RSpec.describe Url, type: :model do
+  describe 'validations' do
+    it { should validate_presence_of(:original_url) }
+    it { should validate_uniqueness_of(:short_url) }
+    it { should validate_length_of(:short_url).is_at_least(5).is_at_most(10) }
+
+    it 'is invalid with an improperly formatted URL' do
+      url = Url.new(original_url: 'invalid_url')
+
+      expect(url).not_to be_valid
+      expect(url.errors[:original_url]).to include('is invalid')
+    end
+
+    it 'is invalid if expiration date is in the past' do
+      url = Url.new(original_url: 'https://example.com', expiration_date: 1.day.ago)
+
+      expect(url).not_to be_valid
+      expect(url.errors[:expiration_date]).to include('must be in the future')
+    end
+  end
+
+  describe 'associations' do
+    it { should have_many(:accesses).dependent(:destroy) }
+  end
+
+  describe '#generate_short_url' do
+    it 'generates a unique short URL' do
+      url = create(:url)
+
+      expect(url.short_url).to be_present
+      expect(url.short_url.length).to be_between(5, 10)
+    end
+  end
+end

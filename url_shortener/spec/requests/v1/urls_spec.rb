@@ -31,4 +31,60 @@ RSpec.describe 'V1::Urls', swagger_doc: 'v1/swagger.yaml' do
       end
     end
   end
+
+  path '/v1/urls/{short_url}' do
+    get 'Retrieve original URL' do
+      tags 'Urls'
+      consumes 'application/json'
+      produces 'application/json'
+      operationId 'url_show'
+      parameter name: :short_url, in: :path, type: :string
+
+      context 'when accessing a valid short URL' do
+        let(:url) { create(:url) }
+        before do
+          url.update(expiration_date: 1.day.ago)
+        end
+        let(:short_url) { url.short_url }
+
+        response 302, 'redirected to original URL' do
+          run_test! do
+            expect(response).to redirect_to(url.original_url)
+          end
+        end
+      end
+
+      context 'when creating a URL without expiration date' do
+        let!(:url) { create(:url, expiration_date: nil) }
+        let(:short_url) { url.short_url }
+
+        response 302, 'URL created without expiration date' do
+          run_test! do
+            expect(url.expiration_date).to be_nil
+          end
+        end
+      end
+
+      context 'when accessing an expired URL' do
+        url = Url.new(original_url: 'https://example.com', expiration_date: 1.day.ago)
+        let(:short_url) { url.short_url }
+
+        response 404, 'URL expired' do
+          run_test! do
+            expect(json_response.error).to eq('Not Found')
+          end
+        end
+      end
+
+      context 'when accessing a non-existent URL' do
+        let(:short_url) { 'invalid123' }
+
+        response 404, 'URL not found' do
+          run_test! do
+            expect(json_response.error).to eq('URL not found')
+          end
+        end
+      end
+    end
+  end
 end

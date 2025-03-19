@@ -7,6 +7,13 @@ class Url < ApplicationRecord
   validates :short_url, presence: true, uniqueness: true, length: { in: 5..10 }
   validate :expiration_date_valid, if: :expiration_date?
 
+  def self.generate_short_url
+    loop do
+      short_url = SecureRandom.alphanumeric(8)
+      return short_url unless Url.exists?(short_url:)
+    end
+  end
+
   private
 
   def expiration_date_valid

@@ -5,12 +5,11 @@ module V1
     before_action :find_url, only: [:show]
 
     def show
-      if @url.expiration_date && @url.expiration_date < Time.current
-        render json: { error: 'URL has expired' }, status: :not_found
+      command = UrlCommand::Show.call(@url)
+      if command.success?
+        redirect_to command.result.original_url, allow_other_host: true
       else
-        @url.increment!(:access_count)
-        @url.accesses.create!(accessed_at: Time.current)
-        redirect_to @url.original_url, allow_other_host: true
+        render json: { error: 'URL has expired' }, status: :not_found
       end
     end
 

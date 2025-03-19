@@ -1,0 +1,80 @@
+# API specifications settings
+api:
+  docs:
+    auth:
+      password: ''
+      username: ''
+    root: 'swagger'
+    versions:
+      - default_host: ''
+        description: 'URL Shortener Docs'
+        endpoint: 'v1/swagger.yaml'
+        id: 'v1/swagger.yaml'
+        openapi: '3.0.3'
+        title: 'URL Shortener'
+        version: 'v1'
+  schemas:
+    error_response:
+      type: 'object'
+      properties:
+        error:
+          $ref: '#/components/schemas/exception'
+      required:
+        - 'error'
+    exception:
+      type: 'object'
+      properties:
+        id:
+          type: 'string'
+        message:
+          type: 'string'
+    url:
+      type: 'object'
+      properties:
+        original_url:
+          type: 'string'
+        short_url:
+          type: 'string'
+        access_count:
+          type: 'integer'
+        expiration_date:
+          type: 'string'
+          format: 'date-time'
+        created_at:
+          type: 'string'
+          format: 'date-time'
+        updated_at:
+          type: 'string'
+          format: 'date-time'
+    url_create:
+      type: 'object'
+      properties:
+        original_url:
+          type: 'string'
+    url_response:
+      type: 'object'
+      properties:
+        original_url:
+          type: 'string'
+        short_url:
+          type: 'string'
+        access_count:
+          type: 'integer'
+          nullable: true
+        expiration_date:
+          type: 'string'
+          format: 'date-time'
+          nullable: true
+        created_at:
+          type: 'string'
+          format: 'date-time'
+        updated_at:
+          type: 'string'
+          format: 'date-time'
+            
+# I18n Settings
+i18n:
+  available_locales:
+    - en
+    - pt-BR
+  default_locale: 'pt-BR'

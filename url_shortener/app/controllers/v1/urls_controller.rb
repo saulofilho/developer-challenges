@@ -15,14 +15,11 @@ module V1
     end
 
     def create
-      url = Url.new(url_params)
-      url.short_url = generate_short_url
-      url.access_count = 0
-
-      if url.save
-        render json: { url: UrlSerializer.new.serialize(url) }, status: :created
+      command = UrlCommand::Create.call(url_params)
+      if command.success?
+        render json: { url: UrlSerializer.new.serialize(command.result) }, status: :created
       else
-        render json: { error: 'Unable to create short URL' }, status: :unprocessable_entity
+        render json: { error: command.errors.join(', ') }, status: :unprocessable_entity
       end
     end
 
@@ -35,13 +32,6 @@ module V1
     def find_url
       @url = Url.find_by(short_url: params[:short_url])
       render json: { error: 'URL not found' }, status: :not_found unless @url
-    end
-
-    def generate_short_url
-      loop do
-        short_url = SecureRandom.alphanumeric(8)
-        return short_url unless Url.exists?(short_url:)
-      end
     end
   end
 end

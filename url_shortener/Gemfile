@@ -41,6 +41,7 @@ gem 'pg', '>= 0.18', '< 2.0'
 gem 'rswag-api'
 gem 'rswag-ui'
 gem 'simple_command'
+gem 'config'
 
 group :development, :test do
   gem 'awesome_print'

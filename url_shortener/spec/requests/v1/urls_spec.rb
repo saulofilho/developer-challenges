@@ -42,10 +42,11 @@ RSpec.describe 'V1::Urls', swagger_doc: 'v1/swagger.yaml' do
 
       context 'when accessing a valid short URL' do
         let(:url) { create(:url) }
+        let(:short_url) { url.short_url }
+
         before do
           url.update(expiration_date: 1.day.ago)
         end
-        let(:short_url) { url.short_url }
 
         response 302, 'redirected to original URL' do
           run_test! do

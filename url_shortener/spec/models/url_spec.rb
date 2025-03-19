@@ -9,14 +9,14 @@ RSpec.describe Url, type: :model do
     it { should validate_length_of(:short_url).is_at_least(5).is_at_most(10) }
 
     it 'is invalid with an improperly formatted URL' do
-      url = Url.new(original_url: 'invalid_url')
+      url = described_class.new(original_url: 'invalid_url')
 
       expect(url).not_to be_valid
       expect(url.errors[:original_url]).to include('is invalid')
     end
 
     it 'is invalid if expiration date is in the past' do
-      url = Url.new(original_url: 'https://example.com', expiration_date: 1.day.ago)
+      url = described_class.new(original_url: 'https://example.com', expiration_date: 1.day.ago)
 
       expect(url).not_to be_valid
       expect(url.errors[:expiration_date]).to include('must be in the future')

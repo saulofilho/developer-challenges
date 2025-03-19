@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 class Url < ApplicationRecord
   has_many :accesses, dependent: :destroy
 
-  validates :original_url, presence: true, format: { with: URI::regexp }
+  validates :original_url, presence: true, format: { with: URI::DEFAULT_PARSER.make_regexp }
   validates :short_url, presence: true, uniqueness: true, length: { in: 5..10 }
   validate :expiration_date_valid, if: :expiration_date?
 
@@ -10,8 +12,8 @@ class Url < ApplicationRecord
   def expiration_date_valid
     return if expiration_date.nil?
 
-    if expiration_date <= Time.current
-      errors.add(:expiration_date, 'must be in the future')
-    end
+    return unless expiration_date <= Time.current
+
+    errors.add(:expiration_date, 'must be in the future')
   end
 end

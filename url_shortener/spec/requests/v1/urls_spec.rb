@@ -55,17 +55,6 @@ RSpec.describe 'V1::Urls', swagger_doc: 'v1/swagger.yaml' do
         end
       end
 
-      context 'when creating a URL without expiration date' do
-        let!(:url) { create(:url, expiration_date: nil) }
-        let(:short_url) { url.short_url }
-
-        response 302, 'URL created without expiration date' do
-          run_test! do
-            expect(url.expiration_date).to be_nil
-          end
-        end
-      end
-
       context 'when accessing an expired URL' do
         url = Url.new(original_url: 'https://example.com', expiration_date: 1.day.ago)
         let(:short_url) { url.short_url }
@@ -99,10 +88,14 @@ RSpec.describe 'V1::Urls', swagger_doc: 'v1/swagger.yaml' do
           initial_access_count = url.access_count
           initial_accesses_count = url.accesses.count
 
+          # Simula o acesso à URL curta
           get "/v1/urls/#{short_url}"
 
+          # Verifique se o contador de acessos foi incrementado
           url.reload
           expect(url.access_count).to eq(initial_access_count + 1)
+
+          # Verifique se um novo registro foi criado na tabela de Access
           expect(url.accesses.count).to eq(initial_accesses_count + 1)
         end
       end

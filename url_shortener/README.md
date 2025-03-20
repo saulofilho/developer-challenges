@@ -50,15 +50,79 @@ rails rswag
 rails c
 ```
 
+## How to test using requests
+First, create an User
+```bash
+rails c
+```
+```ruby
+User.create! email: "user@example.com", "password": "123456"
+
+```
+Than, login.
+```json
+{
+  "email": "user@example.com",
+  "password": "123456"
+}
+
+```
+Response:
+```json
+{
+	"token": "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE3NDI1NjA1NDd9.fmAoc0fk0jZ0V2rEaELOsOyDclBZoY3Y9mT6G3uFAV8",
+	"user": {
+		"id": 1,
+		"email": "user@example.com"
+	}
+}
+
+```
+Add token to Authorization Bearer. 
+```bash
+# In Insomnia, for example
+
+TOKEN: eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE3NDI1NjA1NDd9.fmAoc0fk0jZ0V2rEaELOsOyDclBZoY3Y9mT6G3uFAV8
+
+```
+
 ## API Rest
 
 URL to query                   | Description
 ------------------------------ | ---------------------------
+<code>POST</code> `/v1/login` | Login.
 <code>GET</code> `/v1/urls/{short_url}` | Retrieve original URL.
 <code>GET</code> `/v1/urls/{short_url}/accesses` | Retrieve access history for short URL.
 <code>POST</code> `/v1/urls` | Create short URL.
 
 ## Example
+
+**Request**
+
+    POST /v1/login
+
+**Body**
+
+```json
+{
+  "email": "user@example.com",
+  "password": "123456"
+}
+
+```
+
+**Return**
+
+```json
+{
+	"token": "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE3NDI1NjA1NDd9.fmAoc0fk0jZ0V2rEaELOsOyDclBZoY3Y9mT6G3uFAV8",
+	"user": {
+		"id": 1,
+		"email": "user@example.com"
+	}
+}
+
+```
 
 **Request**
 
@@ -143,16 +207,3 @@ And testing gems like:
 - [simplecov](https://github.com/simplecov-ruby/simplecov) for code coverage
 - [pry-byebug](https://github.com/deivid-rodriguez/pry-byebug) for step-by-step debugging
 - [awesome_print](https://github.com/awesome-print/awesome_print) for prints objects in full color
-
-
-
-rails c
-User.create! email: "user@example.com", "password": "123456"
-
-{
-	"token": "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE3NDI1NjA1NDd9.fmAoc0fk0jZ0V2rEaELOsOyDclBZoY3Y9mT6G3uFAV8",
-	"user": {
-		"id": 1,
-		"email": "user@example.com"
-	}
-}

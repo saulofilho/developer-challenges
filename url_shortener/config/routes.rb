@@ -14,6 +14,5 @@ Rails.application.routes.draw do
     end
 
     post '/login', to: 'authentication#login'
-    get '/protected', to: 'protected#index'
   end
 end

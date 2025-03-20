@@ -40,5 +40,5 @@ RSpec.configure do |config|
     }
   end
 
-  config.swagger_format = :yaml
+  config.openapi_format = :yaml
 end

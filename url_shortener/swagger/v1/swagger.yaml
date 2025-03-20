@@ -42,7 +42,33 @@ paths:
           type: string
       responses:
         '302':
-          description: URL created without expiration date
+          description: redirected to original URL
+        '404':
+          description: URL not found
+  "/v1/urls/{short_url}/accesses":
+    get:
+      summary: Retrieve access history for short URL
+      tags:
+      - Urls
+      operationId: url_accesses
+      parameters:
+      - name: short_url
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: retrieves access history
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  accesses:
+                    "$ref": "#/components/schemas/accesses"
+                required:
+                - accesses
         '404':
           description: URL not found
 servers:
@@ -109,6 +135,29 @@ components:
         updated_at:
           type: string
           format: date-time
+    accesses:
+      type: array
+      items:
+        type: object
+        properties:
+          id:
+            type: integer
+          url_id:
+            type: integer
+            nullable: true
+          access_count:
+            type: integer
+            nullable: true
+          accessed_at:
+            type: string
+            format: date-time
+            nullable: true
+          created_at:
+            type: string
+            format: date-time
+          updated_at:
+            type: string
+            format: date-time
   securitySchemes:
     bearer_auth:
       type: http

@@ -71,7 +71,30 @@ api:
         updated_at:
           type: 'string'
           format: 'date-time'
-            
+    accesses:
+      type: array
+      items:
+        type: object
+        properties:
+          id:
+            type: integer
+          url_id:
+            type: integer
+            nullable: true
+          access_count:
+            type: integer
+            nullable: true
+          accessed_at:
+            type: string
+            format: date-time
+            nullable: true
+          created_at:
+            type: string
+            format: date-time
+          updated_at:
+            type: string
+            format: date-time
+
 # I18n Settings
 i18n:
   available_locales:

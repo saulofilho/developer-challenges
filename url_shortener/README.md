@@ -1,6 +1,10 @@
 # URL Shortener System
 
-The URL Shortener System is...
+The URL shortener system allows users to convert long, cumbersome URLs into short, manageable links. By submitting a URL to the system, it generates a unique short URL that redirects to the original long URL when accessed.
+
+The system also tracks the number of times each short URL is accessed, providing useful analytics for its users. Additionally, each short URL may have an expiration date, after which it becomes inactive and returns a "URL expired" message.
+
+When a user accesses a short URL, the system checks if the URL is still valid (i.e., not expired). If valid, the system redirects the user to the original URL; otherwise, it returns a message indicating that the URL has either expired or does not exist.
 
 ## Local development environment
 
@@ -45,6 +49,72 @@ rails rswag
 ```bash
 rails c
 ```
+
+## API Rest
+
+URL to query                   | Description
+------------------------------ | ---------------------------
+<code>GET</code> `/v1/urls/{short_url}` | Retrieve original URL.
+<code>GET</code> `/v1/urls/{short_url}/accesses` | Retrieve access history for short URL.
+<code>POST</code> `/v1/urls` | Create short URL.
+
+## Example
+
+**Request**
+
+    GET /v1/urls/{short_url}
+
+**Return**
+
+<code>302</code>
+
+**Request**
+
+    GET /v1/urls/{short_url}/accesses
+
+**Return**
+
+``` json
+{
+  "accesses": [
+    {
+      "id": 0,
+      "url_id": 0,
+      "access_count": 0,
+      "accessed_at": "2025-03-20T12:17:19.568Z",
+      "created_at": "2025-03-20T12:17:19.568Z",
+      "updated_at": "2025-03-20T12:17:19.568Z"
+    }
+  ]
+}
+```
+**Request**
+
+    POST /v1/urls/{short_url}
+
+**Body**
+
+``` json
+{
+  "original_url": "string"
+}
+```
+
+**Return**
+
+``` json
+{
+  "url": {
+    "original_url": "string",
+    "short_url": "string",
+    "access_count": 0,
+    "expiration_date": "2025-03-20T12:17:36.083Z",
+    "created_at": "2025-03-20T12:17:36.083Z",
+    "updated_at": "2025-03-20T12:17:36.083Z"
+  }
+}
+```
+
 
 ## Gemfile
 

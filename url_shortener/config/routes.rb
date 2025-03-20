@@ -7,6 +7,10 @@ Rails.application.routes.draw do
   mount Rswag::Api::Engine => '/api-docs'
 
   namespace :v1 do
-    resources :urls, only: %i[create show], param: :short_url
+    resources :urls, only: %i[create show], param: :short_url do
+      member do
+        get 'accesses', to: 'urls#accesses'
+      end
+    end
   end
 end

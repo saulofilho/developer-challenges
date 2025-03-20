@@ -2,7 +2,7 @@
 
 module V1
   class UrlsController < ApplicationController
-    before_action :find_url, only: [:show]
+    before_action :find_url, only: %i[show accesses]
 
     def show
       command = UrlCommand::Show.call(@url)
@@ -19,6 +19,15 @@ module V1
         render json: { url: UrlSerializer.new.serialize(command.result) }, status: :created
       else
         render json: { error: command.errors.join(', ') }, status: :unprocessable_entity
+      end
+    end
+
+    def accesses
+      if @url
+        accesses = @url.accesses.order(created_at: :desc)
+        render json: accesses, status: :ok
+      else
+        render json: { error: 'URL not found' }, status: :not_found
       end
     end
 

@@ -97,4 +97,41 @@ RSpec.describe 'V1::Urls', swagger_doc: 'v1/swagger.yaml' do
       end
     end
   end
+
+  path '/v1/urls/{short_url}/accesses' do
+    get 'Retrieve access history for short URL' do
+      tags 'Urls'
+      consumes 'application/json'
+      produces 'application/json'
+      operationId 'url_accesses'
+      parameter name: :short_url, in: :path, type: :string
+
+      context 'when accessing a URL with access history' do
+        let(:url) { create(:url) }
+        let(:short_url) { url.short_url }
+
+        before do
+          url.update(expiration_date: 1.day.from_now)
+          create_list(:access, 3, url:)
+        end
+
+        response 200, 'retrieves access history' do
+          run_test! do
+            expect(json_response.count).to eq(3)
+            expect(json_response.first).to respond_to(:accessed_at)
+          end
+        end
+      end
+
+      context 'when accessing a non-existent URL' do
+        let(:short_url) { 'invalid123' }
+
+        response 404, 'URL not found' do
+          run_test! do
+            expect(json_response.error).to eq('URL not found')
+          end
+        end
+      end
+    end
+  end
 end

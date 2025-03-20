@@ -35,6 +35,29 @@ RSpec.describe 'V1::Urls', swagger_doc: 'v1/swagger.yaml' do
           end
         end
       end
+
+      context "without user authentication" do
+        context 'when creating a short URL' do
+          response 401, 'unauthorized' do
+            schema type: :object, properties: {
+              error: { type: :string, example: 'Não autorizado' }
+            }
+
+            let(:url) do
+              {
+                url: {
+                  original_url: 'https://www.foobar.com'
+                }
+              }
+            end
+
+            run_test! do
+              expect(response.status).to eq(401)
+              expect(json_response.error).to eq('Não autorizado')
+            end
+          end
+        end
+      end
     end
   end
 
@@ -107,6 +130,24 @@ RSpec.describe 'V1::Urls', swagger_doc: 'v1/swagger.yaml' do
           end
         end
       end
+
+      context "without user authentication" do
+        context 'when creating a short URL' do
+          let(:url) { create(:url) }
+          let(:short_url) { url.short_url }
+
+          response 401, 'unauthorized' do
+            schema type: :object, properties: {
+              error: { type: :string, example: 'Não autorizado' }
+            }
+
+            run_test! do
+              expect(response.status).to eq(401)
+              expect(json_response.error).to eq('Não autorizado')
+            end
+          end
+        end
+      end
     end
   end
 
@@ -145,6 +186,25 @@ RSpec.describe 'V1::Urls', swagger_doc: 'v1/swagger.yaml' do
           response 404, 'URL not found' do
             run_test! do
               expect(json_response.error).to eq('URL not found')
+            end
+          end
+        end
+      end
+
+      context "without user authentication" do
+        context 'when creating a short URL' do
+          let!(:url) { create(:url) }
+          let!(:short_url) { url.short_url }
+          let!(:access) { create_list(:access, 3, url:) }
+
+          response 401, 'unauthorized' do
+            schema type: :object, properties: {
+              error: { type: :string, example: 'Não autorizado' }
+            }
+
+            run_test! do
+              expect(response.status).to eq(401)
+              expect(json_response.error).to eq('Não autorizado')
             end
           end
         end

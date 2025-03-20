@@ -23,6 +23,16 @@ paths:
                     "$ref": "#/components/schemas/url_response"
                 required:
                 - url
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Não autorizado
       requestBody:
         content:
           application/json:
@@ -45,6 +55,16 @@ paths:
           description: redirected to original URL
         '404':
           description: URL not found
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Não autorizado
   "/v1/urls/{short_url}/accesses":
     get:
       summary: Retrieve access history for short URL
@@ -71,6 +91,16 @@ paths:
                 - accesses
         '404':
           description: URL not found
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Não autorizado
 servers:
 - url: "{defaultHost}"
   variables:

@@ -107,18 +107,16 @@ RSpec.describe 'V1::Urls', swagger_doc: 'v1/swagger.yaml' do
       parameter name: :short_url, in: :path, type: :string
 
       context 'when accessing a URL with access history' do
-        let(:url) { create(:url) }
-        let(:short_url) { url.short_url }
-
-        before do
-          url.update(expiration_date: 1.day.from_now)
-          create_list(:access, 3, url:)
-        end
+        let!(:url) { create(:url) }
+        let!(:short_url) { url.short_url }
+        let!(:access) { create_list(:access, 3, url:) }
 
         response 200, 'retrieves access history' do
+          schema schema_with_object(:accesses, '#/components/schemas/accesses')
+
           run_test! do
-            expect(json_response.count).to eq(3)
-            expect(json_response.first).to respond_to(:accessed_at)
+            expect(json_response.accesses.count).to eq(3)
+            expect(json_response.accesses.first).to respond_to(:accessed_at)
           end
         end
       end

@@ -25,7 +25,7 @@ module V1
     def accesses
       if @url
         accesses = @url.accesses.order(created_at: :desc)
-        render json: accesses, status: :ok
+        render json: Panko::Response.new(accesses: Panko::ArraySerializer.new(accesses, each_serializer: AccessSerializer)), status: :ok
       else
         render json: { error: 'URL not found' }, status: :not_found
       end

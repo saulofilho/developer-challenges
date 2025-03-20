@@ -9,9 +9,8 @@ module UrlCommand
     end
 
     def call
-      url = Url.new(@params)
-      url.short_url = Url.generate_short_url
-      url.access_count = 0
+      url = Url.new(@params.merge(short_url: Url.generate_short_url, access_count: 0))
+      return OpenStruct.new(success?: false, errors: url.errors.full_messages) unless url.valid?
 
       if url.save
         OpenStruct.new(success?: true, result: url).result

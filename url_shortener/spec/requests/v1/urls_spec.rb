@@ -11,7 +11,7 @@ RSpec.describe 'V1::Urls', swagger_doc: 'v1/swagger.yaml' do
       operationId 'url_create'
       parameter name: :url, in: :body, schema: { '$ref' => '#/components/schemas/url_create' }
 
-      context "with user authentication" do
+      context 'with user authentication' do
         before do
           allow_any_instance_of(ApplicationController).to receive(:authenticate_user).and_return(true)
         end
@@ -36,7 +36,7 @@ RSpec.describe 'V1::Urls', swagger_doc: 'v1/swagger.yaml' do
         end
       end
 
-      context "without user authentication" do
+      context 'without user authentication' do
         context 'when creating a short URL' do
           response 401, 'unauthorized' do
             schema type: :object, properties: {
@@ -69,7 +69,7 @@ RSpec.describe 'V1::Urls', swagger_doc: 'v1/swagger.yaml' do
       operationId 'url_show'
       parameter name: :short_url, in: :path, type: :string
 
-      context "with user authentication" do
+      context 'with user authentication' do
         before do
           allow_any_instance_of(ApplicationController).to receive(:authenticate_user).and_return(true)
         end
@@ -131,7 +131,7 @@ RSpec.describe 'V1::Urls', swagger_doc: 'v1/swagger.yaml' do
         end
       end
 
-      context "without user authentication" do
+      context 'without user authentication' do
         context 'when creating a short URL' do
           let(:url) { create(:url) }
           let(:short_url) { url.short_url }
@@ -159,8 +159,7 @@ RSpec.describe 'V1::Urls', swagger_doc: 'v1/swagger.yaml' do
       operationId 'url_accesses'
       parameter name: :short_url, in: :path, type: :string
 
-
-      context "with user authentication" do
+      context 'with user authentication' do
         before do
           allow_any_instance_of(ApplicationController).to receive(:authenticate_user).and_return(true)
         end
@@ -191,7 +190,7 @@ RSpec.describe 'V1::Urls', swagger_doc: 'v1/swagger.yaml' do
         end
       end
 
-      context "without user authentication" do
+      context 'without user authentication' do
         context 'when creating a short URL' do
           let!(:url) { create(:url) }
           let!(:short_url) { url.short_url }

@@ -9,7 +9,7 @@ module V1
 
       if user&.authenticate(params[:password])
         token = JsonWebToken.encode(user_id: user.id)
-        render json: { token: token, user: user.slice(:id, :email) }
+        render json: { token:, user: user.slice(:id, :email) }
       else
         render json: { error: 'Email ou senha inválidos' }, status: :unauthorized
       end

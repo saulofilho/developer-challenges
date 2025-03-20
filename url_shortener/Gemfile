@@ -38,14 +38,14 @@ gem 'thruster', require: false
 # gem "rack-cors"
 
 gem 'activerecord-import'
+gem 'bcrypt', '~> 3.1.7'
 gem 'config'
+gem 'jwt'
 gem 'panko_serializer'
 gem 'pg', '>= 0.18', '< 2.0'
 gem 'rswag-api'
 gem 'rswag-ui'
 gem 'simple_command'
-gem 'jwt'
-gem 'bcrypt', '~> 3.1.7'
 
 group :development, :test do
   gem 'awesome_print'

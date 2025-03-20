@@ -143,3 +143,16 @@ And testing gems like:
 - [simplecov](https://github.com/simplecov-ruby/simplecov) for code coverage
 - [pry-byebug](https://github.com/deivid-rodriguez/pry-byebug) for step-by-step debugging
 - [awesome_print](https://github.com/awesome-print/awesome_print) for prints objects in full color
+
+
+
+rails c
+User.create! email: "user@example.com", "password": "123456"
+
+{
+	"token": "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE3NDI1NjA1NDd9.fmAoc0fk0jZ0V2rEaELOsOyDclBZoY3Y9mT6G3uFAV8",
+	"user": {
+		"id": 1,
+		"email": "user@example.com"
+	}
+}

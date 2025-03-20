@@ -12,5 +12,8 @@ Rails.application.routes.draw do
         get 'accesses', to: 'urls#accesses'
       end
     end
+
+    post '/login', to: 'authentication#login'
+    get '/protected', to: 'protected#index'
   end
 end

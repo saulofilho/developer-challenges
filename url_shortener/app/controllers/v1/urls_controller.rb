@@ -6,11 +6,7 @@ module V1
 
     def show
       command = UrlCommand::Show.call(@url)
-      if command.success?
-        redirect_to command.result.original_url, allow_other_host: true
-      else
-        render json: { error: 'URL has expired' }, status: :not_found
-      end
+      redirect_to command.result.original_url, allow_other_host: true
     end
 
     def create

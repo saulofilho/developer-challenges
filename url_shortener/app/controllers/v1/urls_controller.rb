@@ -23,7 +23,7 @@ module V1
     private
 
     def url_params
-      params.require(:url).permit(:original_url, :expiration_date)
+      params.expect(url: %i[original_url expiration_date])
     end
 
     def find_url

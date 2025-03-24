@@ -20,15 +20,12 @@ RSpec.describe UrlCommand::Create, type: :command do
     end
 
     context 'when the parameters are invalid' do
+      subject(:command) { described_class.new(params).call }
+
       let(:params) { { original_url: '' } }
 
       it 'does not create a URL and returns errors' do
-        command = described_class.new(params)
-        result = command.call
-
-        expect(result.result).to be_present
-        expect(result.result.success?).to be false
-        expect(result.result.errors).to be_present
+        expect { command }.to raise_error(ActiveRecord::RecordInvalid, /Original url can't be blank/)
       end
     end
   end

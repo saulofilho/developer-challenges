@@ -18,7 +18,7 @@ module V1
       if command.success?
         render json: { url: UrlSerializer.new.serialize(command.result) }, status: :created
       else
-        render json: { error: command.errors.join(', ') }, status: :unprocessable_entity
+        render json: { errors: command.result&.errors&.full_messages || ['Invalid parameters'] }, status: :unprocessable_entity
       end
     end
 

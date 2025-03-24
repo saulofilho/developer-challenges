@@ -15,11 +15,7 @@ module V1
 
     def create
       command = UrlCommand::Create.call(url_params)
-      if command.success?
-        render json: { url: UrlSerializer.new.serialize(command.result) }, status: :created
-      else
-        render json: { errors: command.result&.errors&.full_messages || ['Invalid parameters'] }, status: :unprocessable_entity
-      end
+      render json: { url: UrlSerializer.new.serialize(command.result) }, status: :created
     end
 
     def accesses

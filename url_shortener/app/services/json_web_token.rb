@@ -7,6 +7,11 @@ class JsonWebToken
 
   def self.encode(payload, exp = 24.hours.from_now)
     payload[:exp] = exp.to_i
+    payload[:jti] = SecureRandom.uuid
+
+    user = User.find_by(id: payload[:user_id])
+    user&.user_sessions&.create!(jti: payload[:jti], expired_at: exp)
+
     JWT.encode(payload, SECRET_KEY)
   end
 

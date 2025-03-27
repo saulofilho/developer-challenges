@@ -10,8 +10,14 @@ class ApplicationController < ActionController::API
     token = header.split.last if header.present?
 
     decoded = JsonWebToken.decode(token)
-    @current_user = User.find_by(id: decoded[:user_id]) if decoded
 
-    render json: { error: 'Não autorizado' }, status: :unauthorized unless @current_user
+    if decoded
+      @current_user = User.find_by(id: decoded[:user_id])
+      session_valid = @current_user&.user_sessions&.exists?(jti: decoded[:jti])
+    end
+
+    return if @current_user && session_valid
+
+    render json: { error: 'Unauthorized' }, status: :unauthorized
   end
 end

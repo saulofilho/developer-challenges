@@ -39,7 +39,7 @@ class ApplicationController < ActionController::API
 
     if user_session.nil?
       render json: { error: 'User session not found' }, status: :not_found
-      return
+      nil
     end
   end
 

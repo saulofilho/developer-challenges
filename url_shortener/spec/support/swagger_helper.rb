@@ -19,7 +19,7 @@ module Swagger
             '$ref' => ref
           }
         },
-        required: [object_name]
+        required: [ object_name ]
       }
     end
 

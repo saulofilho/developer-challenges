@@ -70,7 +70,6 @@ RSpec.describe 'V1::Urls', swagger_doc: 'v1/swagger.yaml' do
             end
           end
         end
-
       end
 
       context 'without user authentication' do

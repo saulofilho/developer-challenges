@@ -18,15 +18,15 @@ gem 'puma', '>= 5.0'
 gem 'tzinfo-data', platforms: %i[windows jruby]
 
 # Use the database-backed adapters for Rails.cache, Active Job, and Action Cable
-gem 'solid_cable'
-gem 'solid_cache'
-gem 'solid_queue'
+# gem 'solid_cable'
+# gem 'solid_cache'
+# gem 'solid_queue'
 
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', require: false
 
 # Deploy this application anywhere as a Docker container [https://kamal-deploy.org]
-gem 'kamal', require: false
+# gem 'kamal', require: false
 
 # Add HTTP asset caching/compression and X-Sendfile acceleration to Puma [https://github.com/basecamp/thruster/]
 gem 'thruster', require: false
@@ -56,15 +56,15 @@ group :development, :test do
   gem 'pry-byebug'
   gem 'rspec-rails', '~> 7.0.0'
   gem 'rswag-specs'
+  gem 'rubocop', '~> 1.54.1', require: false
+  gem 'rubocop-rails', require: false
   gem 'rubocop-rails-omakase', require: false
+  gem 'rubocop-rspec', require: false
 end
 
 group :development do
   gem 'annotate'
   gem 'listen', '~> 3.8'
-  gem 'rubocop', '~> 1.54.1', require: false
-  gem 'rubocop-rails', require: false
-  gem 'rubocop-rspec', require: false
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.1.0'
 end

@@ -32,7 +32,7 @@ RSpec.describe 'V1::Authentication', swagger_doc: 'v1/swagger.yaml' do
           end
 
           before do
-            user = create(:user, email: 'testuser@example.com', password: 'password123')
+            user = create(:user)
           end
 
           run_test! do
@@ -74,7 +74,7 @@ RSpec.describe 'V1::Authentication', swagger_doc: 'v1/swagger.yaml' do
       context 'with valid token' do
         response 204, 'logout successful' do
           before do
-            user = create(:user, email: 'testuser@example.com', password: 'password123')
+            user = create(:user)
             token = JsonWebToken.encode(user_id: user.id, jti: 'some_jti_value')
             allow(request).to receive(:headers).and_return({'Authorization' => "Bearer #{token}"})
             allow_any_instance_of(ApplicationController).to receive(:authenticate_user).and_return(true)

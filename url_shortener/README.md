@@ -59,7 +59,7 @@ rails c
 User.create! email: "user@example.com", "password": "123456"
 
 ```
-Than, login.
+Then, login.
 ```json
 {
   "email": "user@example.com",
@@ -80,7 +80,7 @@ Response:
 ```
 Add token to Authorization Bearer. 
 ```bash
-# In Insomnia, for example
+# Insomnia, for example
 
 TOKEN: eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE3NDI1NjA1NDd9.fmAoc0fk0jZ0V2rEaELOsOyDclBZoY3Y9mT6G3uFAV8
 
@@ -91,6 +91,7 @@ TOKEN: eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE3NDI1NjA1NDd9.fmAoc0fk0jZ
 URL to query                   | Description
 ------------------------------ | ---------------------------
 <code>POST</code> `/v1/login` | Login.
+<code>DELETE</code> `/v1/logout` | Logout.
 <code>GET</code> `/v1/urls/{short_url}` | Retrieve original URL.
 <code>GET</code> `/v1/urls/{short_url}/accesses` | Retrieve access history for short URL.
 <code>POST</code> `/v1/urls` | Create short URL.
@@ -123,6 +124,15 @@ URL to query                   | Description
 }
 
 ```
+
+**Request**
+
+    DELETE /v1/logout
+
+**Return**
+
+<code>204</code>
+
 
 **Request**
 

@@ -94,6 +94,11 @@ api:
           updated_at:
             type: string
             format: date-time
+    # url_create:
+    #   type: 'object'
+    #   properties:
+    #     original_url:
+    #       type: 'string'
 
 # I18n Settings
 i18n:

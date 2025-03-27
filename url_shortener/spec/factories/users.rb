@@ -2,7 +2,12 @@
 
 FactoryBot.define do
   factory :user do
-    email { 'MyString' }
-    password_digest { 'MyString' }
+    email { 'testuser@example.com' }
+    password { 'password123' }
+    password_confirmation { 'password123' }
+
+    after(:build) do |user|
+      user.password_digest = BCrypt::Password.create(user.password)
+    end
   end
 end

@@ -4,6 +4,53 @@ info:
   title: URL Shortener
   version: v1
 paths:
+  "/v1/login":
+    post:
+      summary: User login
+      tags:
+      - Authentication
+      operationId: authentication_login
+      parameters: []
+      responses:
+        '200':
+          description: login successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  authentication_response:
+                    "$ref": "#/components/schemas/authentication_response"
+                required:
+                - authentication_response
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Invalid email or password
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/authentication_login"
+  "/v1/logout":
+    delete:
+      summary: User logout
+      tags:
+      - Authentication
+      operationId: authentication_logout
+      responses:
+        '204':
+          description: logout successful
+        '401':
+          description: unauthorized due to expired token
+        '404':
+          description: user not found
   "/v1/urls":
     post:
       summary: create short URL
@@ -32,7 +79,7 @@ paths:
                 properties:
                   error:
                     type: string
-                    example: Não autorizado
+                    example: Token is missing or invalid
       requestBody:
         content:
           application/json:
@@ -64,7 +111,7 @@ paths:
                 properties:
                   error:
                     type: string
-                    example: Não autorizado
+                    example: Token is missing or invalid
   "/v1/urls/{short_url}/accesses":
     get:
       summary: Retrieve access history for short URL
@@ -100,7 +147,7 @@ paths:
                 properties:
                   error:
                     type: string
-                    example: Não autorizado
+                    example: Token is missing or invalid
 servers:
 - url: "{defaultHost}"
   variables:
@@ -188,6 +235,25 @@ components:
           updated_at:
             type: string
             format: date-time
+    authentication_login:
+      type: object
+      properties:
+        password:
+          type: string
+        email:
+          type: string
+    authentication_response:
+      type: object
+      properties:
+        token:
+          type: string
+        user:
+          type: object
+          properties:
+            id:
+              type: integer
+            email:
+              type: string
   securitySchemes:
     bearer_auth:
       type: http

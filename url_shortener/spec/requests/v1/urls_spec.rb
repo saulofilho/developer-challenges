@@ -16,7 +16,7 @@ RSpec.describe 'V1::Urls', swagger_doc: 'v1/swagger.yaml' do
           allow_any_instance_of(ApplicationController).to receive(:authenticate_user).and_return(true)
         end
 
-        context 'when creating a short URL' do
+        context 'when creating a short URL with params' do
           response 201, 'url created' do
             schema schema_with_object(:url, '#/components/schemas/url_response')
 
@@ -34,6 +34,43 @@ RSpec.describe 'V1::Urls', swagger_doc: 'v1/swagger.yaml' do
             end
           end
         end
+
+        context 'when the URL is invalid' do
+          response 422, 'unprocessable entity' do
+            let(:url) do
+              {
+                url: {
+                  original_url: ''
+                }
+              }
+            end
+
+            run_test! do
+              expect(response.status).to eq(422)
+              expect(json_response.error).to eq('Unprocessable Content')
+            end
+          end
+        end
+
+        context 'when required fields are missing' do
+          response 400, 'bad request' do
+            schema type: :object, properties: {
+              error: { type: :string, example: 'Original URL is required' }
+            }
+
+            let(:url) do
+              {
+                url: {}
+              }
+            end
+
+            run_test! do
+              expect(response.status).to eq(400)
+              expect(json_response.error).to eq('Bad Request')
+            end
+          end
+        end
+
       end
 
       context 'without user authentication' do

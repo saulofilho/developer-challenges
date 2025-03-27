@@ -16,26 +16,8 @@ module V1
     end
 
     def logout
-      header = request.headers['Authorization']
-      token = header.split.last if header.present?
-
-      if token.blank?
-        render json: { error: 'Token is missing or invalid' }, status: :unauthorized
-        return
-      end
-
+      token = request.headers['Authorization'].split.last
       decoded = JsonWebToken.decode(token)
-
-      if decoded.nil?
-        render json: { error: 'Invalid token' }, status: :unauthorized
-        return
-      end
-
-      exp_time = decoded[:exp]
-      if exp_time.present? && Time.at(exp_time) < Time.now
-        render json: { error: 'Token has expired' }, status: :unauthorized
-        return
-      end
 
       @current_user = User.find_by(id: decoded[:user_id])
 

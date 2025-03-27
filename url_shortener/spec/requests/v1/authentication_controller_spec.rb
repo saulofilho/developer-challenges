@@ -64,14 +64,12 @@ RSpec.describe 'V1::Authentication', swagger_doc: 'v1/swagger.yaml' do
 
       context 'with valid token' do
         response 204, 'logout successful' do
-          before do
-            user = create(:user)
-            token = JsonWebToken.encode(user_id: user.id, jti: 'some_jti_value')
-            allow(request).to receive(:headers).and_return({'Authorization' => "Bearer #{token}"})
-            allow_any_instance_of(ApplicationController).to receive(:authenticate_user).and_return(true)
-          end
+          let(:user) { create(:user) }
+          let(:token) { JsonWebToken.encode(user_id: user.id, jti: 'some_jti_value', exp: 24.hours.from_now.to_i) }
 
-          run_test! do
+          it 'logs the user out and returns 204 status' do
+            delete '/v1/logout', headers: { 'Authorization' => "Bearer #{token}" }
+
             expect(response.status).to eq(204)
           end
         end
@@ -79,9 +77,55 @@ RSpec.describe 'V1::Authentication', swagger_doc: 'v1/swagger.yaml' do
 
       context 'without token' do
         response 401, 'unauthorized' do
-          run_test! do
+          it 'returns unauthorized error when no token is provided' do
+            delete '/v1/logout', headers: {}
+
             expect(response.status).to eq(401)
-            expect(json_response.error).to eq('Unauthorized')
+            expect(json_response['error']).to eq('Token is missing or invalid')
+          end
+        end
+      end
+
+      context 'with invalid token' do
+        response 401, 'unauthorized due to invalid token' do
+          let(:invalid_token) { 'invalid_token' }
+
+          it 'returns unauthorized error for invalid token' do
+            delete '/v1/logout', headers: { 'Authorization' => "Bearer #{invalid_token}" }
+
+            expect(response.status).to eq(401)
+            expect(json_response['error']).to eq('Invalid token')
+          end
+        end
+      end
+
+      context 'with expired token' do
+        response 401, 'unauthorized due to expired token' do
+          let(:user) { create(:user) }
+          let(:expired_token) { JsonWebToken.encode(user_id: user.id, jti: 'some_jti_value', exp: 1.year.ago.to_i) }
+
+          before do
+            allow(JsonWebToken).to receive(:decode).and_raise(JWT::ExpiredSignature)
+          end
+          it 'returns unauthorized error for expired token' do
+            delete '/v1/logout', headers: { 'Authorization' => "Bearer #{expired_token}" }
+
+            expect(response.status).to eq(401)
+            expect(json_response['error']).to eq('Token has expired')
+          end
+        end
+      end
+
+      context 'with valid token but user not found' do
+        response 404, 'user not found' do
+          let(:non_existent_user_id) { 99999 }
+          let(:token) { JsonWebToken.encode(user_id: non_existent_user_id, jti: 'some_jti_value') }
+
+          it 'returns user not found error when the user does not exist' do
+            delete '/v1/logout', headers: { 'Authorization' => "Bearer #{token}" }
+
+            expect(response.status).to eq(404)
+            expect(json_response['error']).to eq('User not found')
           end
         end
       end

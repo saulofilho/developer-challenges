@@ -2,6 +2,7 @@
 
 class Url < ApplicationRecord
   has_many :accesses, dependent: :destroy
+  before_validation :set_short_url, unless: :short_url?
 
   validates :original_url, presence: true, format: { with: URI::DEFAULT_PARSER.make_regexp }
   validates :short_url, presence: true, uniqueness: true, length: { in: 5..10 }
@@ -16,9 +17,12 @@ class Url < ApplicationRecord
 
   private
 
+  def set_short_url
+    self.short_url = self.class.generate_short_url
+  end
+
   def expiration_date_valid
     return if expiration_date.nil?
-
     return unless expiration_date <= Time.current
 
     errors.add(:expiration_date, 'must be in the future')

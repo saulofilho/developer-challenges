@@ -35,4 +35,26 @@ RSpec.describe Url, type: :model do
       expect(url.short_url.length).to be_between(5, 10)
     end
   end
+
+  describe 'callbacks' do
+    context 'before validation' do
+      it 'sets a short URL if none is provided' do
+        url = described_class.new(original_url: 'https://example.com')
+
+        url.valid?
+
+        expect(url.short_url).to be_present
+        expect(url.short_url.length).to be_between(5, 10)
+      end
+
+      it 'does not overwrite the short URL if one is already provided' do
+        existing_short_url = 'abcd12345'
+        url = described_class.new(original_url: 'https://example.com', short_url: existing_short_url)
+
+        url.valid?
+
+        expect(url.short_url).to eq(existing_short_url)
+      end
+    end
+  end
 end

@@ -9,7 +9,7 @@ module UrlCommand
     end
 
     def call
-      url = Url.new(@params.merge(short_url: Url.generate_short_url))
+      url = Url.new(@params)
       url.save!
       url
     end

@@ -40,7 +40,7 @@ RSpec.describe 'V1::Urls', swagger_doc: 'v1/swagger.yaml' do
         context 'when creating a short URL' do
           response 401, 'unauthorized' do
             schema type: :object, properties: {
-              error: { type: :string, example: 'Não autorizado' }
+              error: { type: :string, example: 'Unauthorized' }
             }
 
             let(:url) do
@@ -53,7 +53,7 @@ RSpec.describe 'V1::Urls', swagger_doc: 'v1/swagger.yaml' do
 
             run_test! do
               expect(response.status).to eq(401)
-              expect(json_response.error).to eq('Não autorizado')
+              expect(json_response.error).to eq('Unauthorized')
             end
           end
         end
@@ -138,12 +138,12 @@ RSpec.describe 'V1::Urls', swagger_doc: 'v1/swagger.yaml' do
 
           response 401, 'unauthorized' do
             schema type: :object, properties: {
-              error: { type: :string, example: 'Não autorizado' }
+              error: { type: :string, example: 'Unauthorized' }
             }
 
             run_test! do
               expect(response.status).to eq(401)
-              expect(json_response.error).to eq('Não autorizado')
+              expect(json_response.error).to eq('Unauthorized')
             end
           end
         end
@@ -198,12 +198,12 @@ RSpec.describe 'V1::Urls', swagger_doc: 'v1/swagger.yaml' do
 
           response 401, 'unauthorized' do
             schema type: :object, properties: {
-              error: { type: :string, example: 'Não autorizado' }
+              error: { type: :string, example: 'Unauthorized' }
             }
 
             run_test! do
               expect(response.status).to eq(401)
-              expect(json_response.error).to eq('Não autorizado')
+              expect(json_response.error).to eq('Unauthorized')
             end
           end
         end

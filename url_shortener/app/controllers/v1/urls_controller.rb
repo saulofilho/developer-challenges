@@ -11,7 +11,11 @@ module V1
 
     def create
       command = UrlCommand::Create.call(url_params)
-      render json: { url: UrlSerializer.new.serialize(command.result) }, status: :created
+      if command.success?
+        render json: { url: UrlSerializer.new.serialize(command.result) }, status: :created
+      else
+        render json: { error: command.errors.full_messages }, status: :unprocessable_entity
+      end
     end
 
     def accesses

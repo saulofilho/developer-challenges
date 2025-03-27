@@ -79,10 +79,6 @@ RSpec.describe 'V1::Authentication', swagger_doc: 'v1/swagger.yaml' do
 
       context 'without token' do
         response 401, 'unauthorized' do
-          before do
-            allow(request).to receive(:headers).and_return({'Authorization' => nil})
-          end
-
           run_test! do
             expect(response.status).to eq(401)
             expect(json_response.error).to eq('Unauthorized')

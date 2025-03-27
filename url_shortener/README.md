@@ -70,11 +70,13 @@ Then, login.
 Response:
 ```json
 {
-	"token": "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE3NDI1NjA1NDd9.fmAoc0fk0jZ0V2rEaELOsOyDclBZoY3Y9mT6G3uFAV8",
-	"user": {
-		"id": 1,
-		"email": "user@example.com"
-	}
+  "authentication_response": {
+    "token": "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE3NDI1NjA1NDd9.fmAoc0fk0jZ0V2rEaELOsOyDclBZoY3Y9mT6G3uFAV8",
+    "user": {
+      "id": 1,
+      "email": "user@example.com"
+    }
+  }
 }
 
 ```

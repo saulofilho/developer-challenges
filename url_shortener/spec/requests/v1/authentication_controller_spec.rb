@@ -13,16 +13,7 @@ RSpec.describe 'V1::Authentication', swagger_doc: 'v1/swagger.yaml' do
 
       context 'when providing valid credentials' do
         response 200, 'login successful' do
-          schema type: :object, properties: {
-            token: { type: :string },
-            user: {
-              type: :object,
-              properties: {
-                id: { type: :integer },
-                email: { type: :string }
-              }
-            }
-          }
+          schema schema_with_object(:authentication_response, '#/components/schemas/authentication_response')
 
           let(:credentials) do
             {
@@ -36,8 +27,8 @@ RSpec.describe 'V1::Authentication', swagger_doc: 'v1/swagger.yaml' do
           end
 
           run_test! do
-            expect(json_response.token).to be_present
-            expect(json_response.user.email).to eq('testuser@example.com')
+            expect(json_response.authentication_response.token).to be_present
+            expect(json_response.authentication_response.user.email).to eq('testuser@example.com')
           end
         end
       end

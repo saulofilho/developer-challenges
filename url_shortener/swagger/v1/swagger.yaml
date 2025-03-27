@@ -70,6 +70,18 @@ paths:
                     "$ref": "#/components/schemas/url_response"
                 required:
                 - url
+        '422':
+          description: unprocessable entity
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Original URL is required
         '401':
           description: unauthorized
           content:

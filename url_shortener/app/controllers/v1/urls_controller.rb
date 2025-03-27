@@ -19,7 +19,7 @@ module V1
     end
 
     def accesses
-      accesses = @url.accesses.order(created_at: :desc)
+      accesses = @url.accesses
       render json: Panko::Response.new(accesses: Panko::ArraySerializer.new(accesses, each_serializer: AccessSerializer)),
              status: :ok
     end
